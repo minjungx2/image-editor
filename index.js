@@ -1,4 +1,4 @@
-import ImageEditor from './imageEditor.js'
+import ImageEditor from './src/imageEditor.js'
 
 const imageEditor = new ImageEditor('imageCanvas')
 
