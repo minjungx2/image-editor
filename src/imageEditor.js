@@ -1,27 +1,28 @@
+import { fabric } from "fabric";
+
 export default class ImageEditor {
 	constructor(canvasElement) {
-		this.canvasContext = null
+		this.canvas = null
 
 		this.setImageEditor(canvasElement)
 	}
 
 	setImageEditor(canvasElement) {
-		const canvas = document.querySelector(`#${canvasElement}`)
-		this.canvasContext = canvas.getContext('2d')
+		this.canvas = new fabric.Canvas(canvasElement, { width: 1000, height: 1000 })
 	}
 
 	openImage(file) {
-		const canvasContext = this.canvasContext
+		const canvas = this.canvas
 		const reader = new FileReader()
 		reader.onload = function(e) {
 			const src = e.target.result
 
-			let img = new Image()
-			img.src = src
-			img.onload = function() {
-				console.log(1, canvasContext)
-				canvasContext.drawImage(img,0,0,100,100)
-			}
+			fabric.Image.fromURL(src, function(img) {
+				canvas.setBackgroundImage(src, canvas.renderAll.bind(canvas), {
+					originX: 'left',
+					originY: 'top'
+				})
+			});
 		}
 		reader.readAsDataURL(file)
 	}
